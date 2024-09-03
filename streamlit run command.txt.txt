@@ -1,4 +1,5 @@
 streamlit run "C:\Users\FATHIMA MUSKAN\OneDrive\Desktop\Multiple disease prediction system\Multiple disease pred.py"
+streamlit_option_menu
 
 
 
