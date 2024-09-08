@@ -4,17 +4,27 @@ Created on Tue Sep  3 15:16:50 2024
 
 @author: FATHIMA MUSKAN
 """
+import os
 import pickle
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-#load saved models
-diabetes_model = pickle.load(open('C:/Users/FATHIMA MUSKAN/OneDrive/Desktop/Multiple disease prediction system/diabetes_model.save','rb'))
+# Set page configuration
+st.set_page_config(page_title="Health Assistant",
+                   layout="wide",
+                   page_icon="🧑‍⚕️")
 
-heart_disease_model = pickle.load(open('C:/Users/FATHIMA MUSKAN/OneDrive/Desktop/Multiple disease prediction system/heart_disease_model.save','rb'))
+    
+# getting the working directory of the main.py
+working_dir = os.path.dirname(os.path.abspath(__file__))
 
-parkinsons_model = pickle.load(open('C:/Users/FATHIMA MUSKAN/OneDrive/Desktop/Multiple disease prediction system/parkinsons_model.save','rb'))
+# loading the saved models
 
+diabetes_model = pickle.load(open(f'{working_dir}/diabetes_model.save', 'rb'))
+
+heart_disease_model = pickle.load(open(f'{working_dir}/heart_disease_model.save', 'rb'))
+
+parkinsons_model = pickle.load(open(f'{working_dir}/parkinsons_model.save', 'rb'))
 
 #sidebar for navigation
 
