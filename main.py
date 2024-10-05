@@ -5,6 +5,7 @@ Created on Tue Sep  3 15:16:50 2024
 @author: FATHIMA MUSKAN
 """
 import pickle
+import os
 import streamlit as st
 import plotly.express as px
 from streamlit_option_menu import option_menu
