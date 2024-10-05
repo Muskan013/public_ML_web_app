@@ -10,6 +10,8 @@ import plotly.express as px
 from streamlit_option_menu import option_menu
 
 # Load saved models
+working_dir = os.path.dirname(os.path.abspath(__file__))
+
 diabetes_model = pickle.load(open(f'{working_dir}/diabetes_model.save', 'rb'))
 
 heart_disease_model = pickle.load(open(f'{working_dir}/heart_disease_model.save', 'rb'))
