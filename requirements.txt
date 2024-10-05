@@ -4,3 +4,6 @@ streamlit
 streamlit_option_menu
 scikit-learn
 plotly.express
+categorize_risk
+vasualize_risk_factors_with_
+validate_inputs
