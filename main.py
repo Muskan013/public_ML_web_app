@@ -5,19 +5,14 @@ Created on Tue Sep  3 15:16:50 2024
 @author: FATHIMA MUSKAN
 """
 import pickle
-import os
 import streamlit as st
 import plotly.express as px
 from streamlit_option_menu import option_menu
 
 # Load saved models
-working_dir = os.path.dirname(os.path.abspath(__file__))
-
-diabetes_model = pickle.load(open(f'{working_dir}/diabetes_model.save', 'rb'))
-
-heart_disease_model = pickle.load(open(f'{working_dir}/heart_disease_model.save', 'rb'))
-
-parkinsons_model = pickle.load(open(f'{working_dir}/parkinsons_model.save', 'rb'))
+diabetes_model = pickle.load(open('C:/Users/FATHIMA MUSKAN/OneDrive/Desktop/Multiple disease prediction system/diabetes_model.save', 'rb'))
+heart_disease_model = pickle.load(open('C:/Users/FATHIMA MUSKAN/OneDrive/Desktop/Multiple disease prediction system/heart_disease_model.save', 'rb'))
+parkinsons_model = pickle.load(open('C:/Users/FATHIMA MUSKAN/OneDrive/Desktop/Multiple disease prediction system/parkinsons_model.save', 'rb'))
 
 # Sidebar for navigation
 with st.sidebar:
@@ -53,27 +48,48 @@ def visualize_risk_factors_with_categories(factors, values, categories, title):
     )
     st.plotly_chart(fig)
 
-# Function to check if inputs are valid numbers and within the two-digit limit
-# Function to check if inputs are valid numbers and within the two-digit limit
+
+
+# Function to check if inputs are valid numbers and within the limit for given Value
 def validate_inputs(inputs):
     invalid_values = []  # To store invalid input values
     valid = True
     
-    for value in inputs:
-        # Check if input is a number and if it exceeds two digits
+    for i, value in enumerate(inputs):
         try:
             float_value = float(value)  # Convert to float
+
+            
+            # Specific validation for "Number of pregnancies" (index 0 in inputs)
+            if i == 0 and float_value > 17:
+                return False, ["Pregnancies exceed the maximum limit of 17, that cannot be predictable"]
+            # Specific validation for "Number of glusose level" (index 1 in inputs)
+            if i == 1 and float_value > 199:
+                return False, ["glucose level exceed the maximum limit of 199, that cannot be predictable"]
+            if i == 2 and float_value > 122:
+                return False, ["Blood Pressure level exceed the maximum limit of 122, that cannot be predictable"]
+            if i == 3 and float_value > 99:
+                return False, ["Skin Thickness value exceed the maximum limit of 99, that cannot be predictable"]
+            if i == 4 and float_value > 200:
+                return False, ["Insulin level exceed the maximum limit of 200, means the person has Type 2 diabetes & that cannot be predictable"]
+            if i == 5 and float_value > 67:
+                return False, ["BMI value exceed the maximum limit of 67, that cannot be predictable"]
+            if i == 6 and float_value > 2.42:
+                return False, ["Diabetes Pedigree Function value exceed the maximum limit of 2.42, that cannot be predictable"]
+            if i == 7 and float_value > 120:
+                return False, ["Age value exceed the maximum limit of 120, that cannot be predictable"]
+            
+            # General validation for negative values
             if float_value < 0:
                 invalid_values.append(value)
                 valid = False
-            elif abs(float_value) >= 100:  # Check if absolute value exceeds two digits
-                invalid_values.append(value)
-                valid = False
+
         except ValueError:
             invalid_values.append(value)  # Add invalid input
             valid = False
             
     return valid, invalid_values  # Return only the invalid input values
+
 
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
@@ -112,7 +128,7 @@ if selected == 'Diabetes Prediction':
             if diab_prediction[0] == 1:
                 diab_diagnosis = 'The person is diabetic'
                 health_recommendation = '''
-                **Health Recommendations for Diabetes:**
+                *Health Recommendations for Diabetes:*
                 - Maintain a balanced diet with low sugar and high fiber.
                 - Regular physical activity, such as 30 minutes of moderate exercise daily.
                 - Monitor blood glucose levels regularly.
@@ -123,14 +139,14 @@ if selected == 'Diabetes Prediction':
                 # Defining risk thresholds
                 risk_factors = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
                 categories = [
-                    categorize_risk(float(Pregnancies), 0, 4),
-                    categorize_risk(float(Glucose), 70, 120),
+                    categorize_risk(float(Pregnancies), 0, 6),
+                    categorize_risk(float(Glucose), 99, 141),
                     categorize_risk(float(BloodPressure), 60, 80),
-                    categorize_risk(float(SkinThickness), 10, 30),
-                    categorize_risk(float(Insulin), 30, 200),
-                    categorize_risk(float(BMI), 18.5, 24.9),
-                    categorize_risk(float(DiabetesPedigreeFunction), 0.1, 1.0),
-                    categorize_risk(float(Age), 20, 50)
+                    categorize_risk(float(SkinThickness), 0, 32),
+                    categorize_risk(float(Insulin), 0, 129),
+                    categorize_risk(float(BMI), 27.3, 36.6),
+                    categorize_risk(float(DiabetesPedigreeFunction), 0.24, 0.63),
+                    categorize_risk(float(Age), 24, 50)
                 ]
                 
                 # Visualize with risk categories
@@ -142,6 +158,7 @@ if selected == 'Diabetes Prediction':
 
     st.success(diab_diagnosis)
     st.info(health_recommendation)
+
 
 # Heart Disease Prediction Page
 if selected == 'Heart Disease Prediction':
@@ -190,7 +207,7 @@ if selected == 'Heart Disease Prediction':
             if heart_prediction[0] == 1:
                 heart_diagnosis = 'The person is having heart disease'
                 heart_recommendation = '''
-                **Health Recommendations for Heart Disease:**
+                *Health Recommendations for Heart Disease:*
                 - Reduce salt intake and avoid fatty, fried foods.
                 - Engage in regular cardiovascular exercise like walking, jogging, or swimming.
                 - Quit smoking and limit alcohol consumption.
@@ -275,7 +292,7 @@ if selected == "Parkinson's Prediction":
             if parkinsons_prediction[0] == 1:
                 parkinsons_diagnosis = "The person has Parkinson's disease"
                 parkinsons_recommendation = '''
-                **Health Recommendations for Parkinson's Disease:**
+                *Health Recommendations for Parkinson's Disease:*
                 - Consult a neurologist for tailored treatment and therapy.
                 - Engage in regular physical activity to improve mobility.
                 - Maintain a balanced diet rich in antioxidants.
