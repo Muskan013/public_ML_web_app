@@ -4,23 +4,23 @@ Created on Tue Sep  3 15:16:50 2024
 
 @author: FATHIMA MUSKAN
 """
+ 
 import pickle
 import os
 import streamlit as st
 import plotly.express as px
 from streamlit_option_menu import option_menu
-
 import streamlit as st
 import pytesseract
 from PIL import Image
 import PyPDF2
 import numpy as np
-
-
-    
-
-
-
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
 
 
 
@@ -28,7 +28,7 @@ import numpy as np
 # Set page configuration
 st.set_page_config(page_title="Health Assistant",
                    layout="wide",
-                   page_icon="🧑‍⚕️")
+                   page_icon="C:/Users/FATHIMA MUSKAN/Downloads/White and Blue Modern Health Clinic Logo/1.png")
 
 # Getting the working directory of the main.py
 working_dir = os.path.dirname(os.path.abspath(__file__))
@@ -38,11 +38,12 @@ diabetes_model = pickle.load(open(f'{working_dir}/diabetes_model.save', 'rb'))
 heart_disease_model = pickle.load(open(f'{working_dir}/heart_disease_model.save', 'rb'))
 parkinsons_model = pickle.load(open(f'{working_dir}/parkinsons_model.save', 'rb'))
 
-with st.sidebar:
-    selected = option_menu(
+# Streamlit interface
+with st.sidebar: 
+    selected = option_menu( 
         'Multiple Disease Prediction System',
-        ['Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction", 'User Dashboard'],
-        icons=['activity', 'heart', 'person', 'people'],
+        ['User Dashboard','Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction",'Food and Diet Recommendations', 'Nearby Hospital Finder','Emergency Health Info Card' ],
+        icons=['people','activity', 'heart', 'person', 'egg-fried',  'hospital', 'card-heading'],
         default_index=0
     )
 
@@ -139,6 +140,294 @@ if selected == 'User Dashboard':
         df = px.data.tips()
         fig = px.bar(data_frame=data, x='Metric', y='Value', title='User Health Metrics')
         st.plotly_chart(fig)
+
+
+if selected == 'Nearby Hospital Finder':
+    st.title('Nearby Hospital Finder')
+
+
+    # Input for location
+    location = st.text_input("Enter your location (e.g., city, address)", "New York")
+
+    # Create a Google Maps search URL
+    google_maps_url = f"https://www.google.com/maps/search/hospitals+near+{location}"
+
+    # Provide a clickable link to open Google Maps in a new tab
+    st.markdown(f"""
+        <a href="{google_maps_url}" target="_blank">
+        Open Google Maps to search for hospitals near {location}</a>
+    """, unsafe_allow_html=True)
+    
+    
+
+    
+    
+ 
+
+
+
+# Sample meal recommendation data with images and recipes for Diabetes and Heart Disease
+diabetes_meals = [
+    
+    {
+        "name": "Quinoa Salad with Avocado", 
+        "image": "https://bing.com/th?id=OSK.7cb5856af4eb17306e31b0d2ddecf4ea",
+        "recipe": "To make a quinoa salad with avocado, you can cook 1 cup of quinoa according to package instructions. Allow it to cool, then mix it with diced avocado, chopped cucumber, cherry tomatoes, red onion, and cilantro. For dressing, whisk together olive oil, lime juice, salt, and pepper, and pour it over the salad. Toss gently and serve chilled."
+    },
+    {
+        "name": "Greek Yogurt with Berries", 
+        "image": "https://bing.com/th?id=OSK.2b59d06bd70e8e1925ea7baad2c23ff4",
+        "recipe": "In a bowl, add the Greek yogurt, Top it with the mixed berries, Drizzle with honey or maple syrup if desired, Add granola or nuts for crunch (optional), Mix gently and enjoy!"
+    },
+    {
+     "name": "Chickpea and Spinach Curry",
+     "image": "https://www.wearesovegan.com/wp-content/uploads/2019/03/veganspinachchickpeacurryrecipe-t1.jpg",
+     "recipe": """1 can chickpeas (rinsed and drained),2 cups fresh spinach, 1 onion, diced, 2 garlic cloves, minced, 1 teaspoon curry powder, 1 can diced tomatoes (no added sugar), Olive oil"""
+     },
+    {
+     "name": "Stuffed Bell Peppers",
+     "image": "https://bellyfull.net/wp-content/uploads/2021/01/Stuffed-Peppers-blog-768x1024.jpg",
+     "recipe": """4 bell peppers (any color), 1 cup cooked brown rice or quinoa, 1 can black beans (rinsed and drained), 1 cup diced tomatoes (fresh or canned, no added sugar), 1 teaspoon cumin, ½ teaspoon chili powder, ½ cup shredded low-fat cheese (optional)"""
+     },
+    {
+     "name": "Cauliflower Fried Rice",
+     "image": "https://detoxinista.com/wp-content/uploads/2019/07/cauliflower-fried-rice-recipe.jpg",
+     "recipe": """1 head cauliflower, grated or processed into rice, 2 eggs (optional, can omit for vegan), 1 cup mixed vegetables (such as peas, carrots, and bell peppers), 3 green onions, chopped, 2 tablespoons low-sodium soy sauce or tamari, 1 tablespoon sesame oil"""
+     },
+    {
+     "name": "Almond Butter and Apple Slices",
+     "image": "https://th.bing.com/th/id/R.68b13925e592ca1a4c751d0b15a3b8ca?rik=4LNicLhGt6C%2bvw&riu=http%3a%2f%2fcdn.shopify.com%2fs%2ffiles%2f1%2f0573%2f6526%2f6626%2farticles%2fApple_Slices_with_Almond_Butter.jpg%3fv%3d1674858298&ehk=NhBnaqmb2x8A9oNhHMJoowivU9TiY0EOZfaZAISBqPs%3d&risl=&pid=ImgRaw&r=0",
+     "recipe": """1 medium apple (sliced), 2 tablespoons natural almond butter (no added sugar)"""
+     },
+    {
+     "name": "Egg and Spinach Breakfast Muffins",
+     "image": "https://i.pinimg.com/originals/4a/ed/4a/4aed4ab547b388bd253fd5469b69bd42.jpg",
+     "recipe": """6 large eggs, 1 cup fresh spinach, chopped, ½ cup diced bell peppers, ¼ cup feta cheese (optional), Salt and pepper to taste"""
+     },
+    {
+     "name": "Cabbage and Sausage Stir-Fry",
+     "image": "https://www.wholesomeyum.com/wp-content/uploads/2020/12/wholesomeyum-fried-cabbage-and-sausage-recipe-12.jpg",
+     "recipe": """1 small head of green cabbage, sliced, 1 onion, sliced, 2 sausages (turkey or chicken for lower fat), 2 tablespoons olive oil, Salt and pepper to taste"""
+     },
+    {
+     "name": "Berry Chia Seed Pudding",
+     "image": "https://plantyou.com/wp-content/uploads/2023/01/DSC03586-2-1400x1864.jpg",
+     "recipe": """1 cup unsweetened almond milk, ¼ cup chia seeds, 1 teaspoon vanilla extract, 1 cup mixed berries (strawberries, blueberries, raspberries), Stevia or erythritol for sweetness (optional)"""
+     },
+    {
+     "name": "Roasted Vegetable Medley",
+     "image": "https://www.allrecipes.com/thmb/rrplCGJkonMYNIkhRtw1NrXKEww=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/165649roasted-vegetable-medley-DDMFS-001-4x3-f9c51738278e4c92aa53d51250f4ed10.jpg",
+     "recipe": """1 zucchini, chopped, 1 bell pepper, chopped, 1 cup broccoli florets, 1 tablespoon olive oil, 1 teaspoon Italian seasoning, Salt and pepper to taste"""
+     },
+    {
+        "name": "Grilled Salmon with Vegetables", 
+        "image": "https://bing.com/th?id=OSK.d1d049c30a65f799c99c1c1e098de16e",
+        "recipe": """1 medium zucchini, halved lengthwise, 2 red, orange and/or yellow bell peppers, trimmed, halved and seeded, 1 medium red onion, cut into 1-inch wedges, 1 tablespoon extra-virgin olive oil, ½ teaspoon salt, divided, ½ teaspoon ground pepper, 1 ¼ pounds salmon fillet, cut into 4 portions, ¼ cup thinly sliced fresh basil, 1 lemon, cut into 4 wedges"""
+    },
+    
+    
+]
+
+heart_disease_meals = [
+    {
+        "name": "Leafy Green Salad with Olive Oil", 
+        "image": "path_to_images/heart_meal1.jpg",
+        "recipe": "Recipe for Leafy Green Salad with Olive Oil..."
+    },
+    {
+        "name": "Oats with Fresh Fruits", 
+        "image": "path_to_images/heart_meal2.jpg",
+        "recipe": "Recipe for Oats with Fresh Fruits..."
+    },
+    {
+        "name": "Baked Chicken with Asparagus", 
+        "image": "path_to_images/heart_meal3.jpg",
+        "recipe": "Recipe for Baked Chicken with Asparagus..."
+    }
+]
+
+# Feature: Food and Diet Recommendations
+if selected == "Food and Diet Recommendations":
+    st.header("Personalized Food and Diet Recommendations")
+
+    # User selects their condition
+    condition = st.selectbox("Select your health condition", ["Diabetes", "Heart Disease", "Parkinson's", "General Health"])
+
+    # Display meal recommendations with images in 2 columns (Left: food name + image, Right: View Recipe button)
+    if condition == "Diabetes":
+        st.subheader("Diet Recommendations for Diabetes")
+        for meal in diabetes_meals:
+            col1, col2 = st.columns([1, 1])  # Create 2 columns
+
+            with col1:  # Left side for image and name
+                st.image(meal["image"], caption=meal["name"], use_column_width=True)
+
+            with col2:  # Right side for recipe button
+                if st.button(f"View Recipe for {meal['name']}", key=meal["name"]):
+                    st.write(meal["recipe"])  # Display the recipe when button is clicked
+
+    elif condition == "Heart Disease":
+        st.subheader("Diet Recommendations for Heart Disease")
+        for meal in heart_disease_meals:
+            col1, col2 = st.columns([1, 1])  # Create 2 columns
+
+            with col1:  # Left side for image and name
+                st.image(meal["image"], caption=meal["name"], use_column_width=True)
+
+            with col2:  # Right side for recipe button
+                if st.button(f"View Recipe for {meal['name']}", key=meal["name"]):
+                    st.write(meal["recipe"])  # Display the recipe when button is clicked
+
+    else:
+        st.subheader("General Health Recommendations")
+        st.write("Maintain a balanced diet rich in fruits, vegetables, lean protein, and whole grains.")
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+        
+        
+        
+      
+
+
+
+
+# Function to create the PDF for the health info card
+def create_health_info_card_pdf(name, allergies, medications, emergency_contact):
+    # Define card size (adjust dimensions if necessary)
+    card_width = 200  # width of the card
+    card_height = 125  # height of the card
+
+    buffer = io.BytesIO()
+
+    # Create PDF object
+    c = canvas.Canvas(buffer, pagesize=letter)
+
+    # Set position for text
+    text_x = 50
+    text_y = 700
+
+    # Add content to the PDF
+    c.drawString(text_x, text_y, f"Name: {name}")
+    c.drawString(text_x, text_y - 20, f"Allergies: {allergies}")
+    c.drawString(text_x, text_y - 40, f"Medications: {medications}")
+    c.drawString(text_x, text_y - 60, f"Emergency Contact: {emergency_contact}")
+
+    # Finalize the PDF
+    c.showPage()
+    c.save()
+
+    buffer.seek(0)
+    return buffer
+
+
+
+
+
+
+
+
+# Function to create the PDF for the health info card
+def create_health_info_card_pdf(name, condition, medications, emergency_contact, specific_instructions):
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+
+    # Add Health Assistant name and logo at the top
+    text_x = 50
+    top_y = 750  # Y position for top content
+    c.drawString(text_x, top_y, "Generated by Health Assistant")
+
+    # Adding logo (replace 'logo_path' with the path to your logo image)
+    logo_path = "C:/Users/FATHIMA MUSKAN/Downloads/White and Blue Modern Health Clinic Logo/1.png"  # Make sure to have the correct path to the logo file
+    logo = ImageReader(logo_path)
+    c.drawImage(logo, text_x + 250, top_y - 20, width=1 * inch, height=1 * inch)
+
+    # Add user content to the PDF
+    text_y = top_y - 100  # Starting position below the logo
+    c.drawString(text_x, text_y, f"Name: {name}")
+    c.drawString(text_x, text_y - 20, f"Condition: {condition}")
+    c.drawString(text_x, text_y - 40, f"Medications: {medications}")
+    c.drawString(text_x, text_y - 60, f"Emergency Contact: {emergency_contact}")
+    c.drawString(text_x, text_y - 80, f"Specific Emergency Instructions: {specific_instructions}")
+
+    c.showPage()
+    c.save()
+    buffer.seek(0)
+    return buffer
+
+
+
+# Main content based on selection
+if selected == 'Emergency Health Info Card':
+    st.title("Emergency Health Info Card")
+
+    # Input fields for the health info card
+    name = st.text_input("Name")
+    condition = st.selectbox("Select Condition", ["Diabetes", "Heart Disease", "Parkinson's Disease"])
+    medications = st.text_input("Medications")
+    emergency_contact = st.text_input("Emergency Contact")
+
+    # Disease-specific emergency instructions
+    if condition == "Diabetes":
+        specific_instructions = st.text_area("Specific Instructions", 
+            "Monitor blood sugar levels. If unconscious, provide emergency glucose gel or glucagon.")
+    elif condition == "Heart Disease":
+        specific_instructions = st.text_area("Specific Instructions", 
+            "Call 911 for chest pain. Administer aspirin and nitroglycerin if prescribed.")
+    elif condition == "Parkinson's Disease":
+        specific_instructions = st.text_area("Specific Instructions", 
+            "Help maintain mobility and avoid falls. Administer medications on time.")
+
+    # Generate PDF when button is clicked
+    if st.button("Generate Health Info Card"):
+        if name and emergency_contact and condition:
+            pdf_buffer = create_health_info_card_pdf(name, condition, medications, emergency_contact, specific_instructions)
+            st.download_button(
+                label="Download Health Info Card",
+                data=pdf_buffer,
+                file_name="health_info_card.pdf",
+                mime="application/pdf",
+            )
+        else:
+            st.error("Please fill out the required fields.")
+
+
+
+
+
+
+
+    
+
+    
+
+   
+
+    
+    
+    
+    
+
+
+            
+           
+    
+
+
+
+
         
         
         
@@ -175,14 +464,7 @@ with st.sidebar:
         st.subheader("Suggestions for Improvement")
         st.write(suggestion)
     
-    
-    
-    
-    
-    
-    
-    
-
+ 
 # Diabetes Prediction Page
 if selected == 'Diabetes Prediction':
     
@@ -503,3 +785,6 @@ if selected == "Parkinson's Prediction":
     st.success(parkinsons_diagnosis)
     st.info(health_recommendation_pd)
 
+
+
+     
