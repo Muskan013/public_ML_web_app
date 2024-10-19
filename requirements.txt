@@ -6,3 +6,10 @@ scikit-learn
 plotly.express
 pytesseract
 PyPDF2
+colors
+io
+letter
+canvas
+inch
+ImageReader
+
