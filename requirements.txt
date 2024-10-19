@@ -7,9 +7,5 @@ plotly.express
 pytesseract
 PyPDF2
 io
-reportlab.lib
-reportlab.lib.units
-reportlab.lib.utils
-reportlab.pdfgen
-reportlab.lib.pagessizes
+reportlab
 
