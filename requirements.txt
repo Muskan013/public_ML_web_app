@@ -9,7 +9,7 @@ PyPDF2
 reportlab
 librosa
 streamlit_drawable_canvas
-opencv-python
+opencv
 numpy
 cv2
 
