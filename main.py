@@ -30,7 +30,7 @@ from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import numpy as np
 import cv2
-import opencv-python
+import opencv_python
 
 
 
