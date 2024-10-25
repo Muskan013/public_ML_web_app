@@ -11,5 +11,6 @@ librosa
 streamlit_drawable_canvas
 opencv_python
 numpy
+cv2
 
 
