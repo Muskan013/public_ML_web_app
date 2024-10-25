@@ -8,6 +8,6 @@ pytesseract
 PyPDF2
 reportlab
 librosa
-st_canvas
+streamlit_drawable_canvas
 cv2
 
