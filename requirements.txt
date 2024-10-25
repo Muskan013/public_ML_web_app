@@ -1,12 +1,14 @@
 streamlit
-plotly
-streamlit-option-menu
+pickle-mixin
+plotly.express
+streamlit_option_menu
+scikit-learn
 pytesseract
 Pillow
 PyPDF2
 reportlab
 librosa
-streamlit-drawable-canvas
+streamlit-_drawable_canvas
 opencv-python
 numpy
 
