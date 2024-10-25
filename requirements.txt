@@ -7,4 +7,7 @@ plotly.express
 pytesseract
 PyPDF2
 reportlab
+librosa
+st_canvas
+cv2
 
