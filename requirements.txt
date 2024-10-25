@@ -8,8 +8,8 @@ Pillow
 PyPDF2
 reportlab
 librosa
-streamlit-_drawable_canvas
-opencv-python
+streamlit_drawable_canvas
+opencv_python
 numpy
 
 
