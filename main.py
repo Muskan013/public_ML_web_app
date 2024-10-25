@@ -872,75 +872,7 @@ if selected == "Parkinson's Prediction":
                         st.write("### Suggestions for Autonomic Symptoms:")
                         for suggestion in suggestions:
                             st.write("- " + suggestion)
-                # Set up the canvas
-                st.title("Handwriting Analysis (Micrographia Detection)")
-
-                # Create a drawing canvas
-                canvas_result = st_canvas(
-                    fill_color="rgba(255, 165, 0, 0.3)",  # Color for the drawing
-                    stroke_width=2,  # Pen width
-                    stroke_color="black",  # Pen color
-                    background_color="white",  # Background color
-                    width=500,  # Canvas width
-                    height=200,  # Canvas height
-                    drawing_mode="freedraw",  # Drawing mode
-                    key="canvas",
-                )
-
-                # Analysis function for Micrographia detection
-                def analyze_handwriting(image_data):
-                    # Convert to grayscale
-                    img_gray = cv2.cvtColor(image_data, cv2.COLOR_RGBA2GRAY)
-                    
-                    # Thresholding to get a binary image (black/white)
-                    _, img_thresh = cv2.threshold(img_gray, 127, 255, cv2.THRESH_BINARY_INV)
-                    
-                    # Find contours of the handwriting
-                    contours, _ = cv2.findContours(img_thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-                    
-                    # Get bounding boxes and analyze
-                    total_area = 0
-                    total_stroke_length = 0
-                    stroke_areas = []
-                    for contour in contours:
-                        x, y, w, h = cv2.boundingRect(contour)
-                        stroke_area = w * h
-                        stroke_areas.append(stroke_area)
-                        total_area += stroke_area
-                        total_stroke_length += w  # Use width as stroke length approximation
-                    
-                    # Results
-                    num_strokes = len(contours)
-                    avg_stroke_area = total_area / num_strokes if num_strokes > 0 else 0
-                    avg_stroke_length = total_stroke_length / num_strokes if num_strokes > 0 else 0
-
-                    return {
-                        "num_strokes": num_strokes,
-                        "total_area": total_area,
-                        "avg_stroke_area": avg_stroke_area,
-                        "avg_stroke_length": avg_stroke_length,
-                        "min_stroke_area": min(stroke_areas) if stroke_areas else 0,
-                        "max_stroke_area": max(stroke_areas) if stroke_areas else 0
-                    }
-
-                # Process the handwriting after drawing
-                if canvas_result.image_data is not None:
-                    st.image(canvas_result.image_data, caption="Your handwriting", use_column_width=True)
-
-                    # Convert to numpy array
-                    img_data = np.array(canvas_result.image_data, dtype=np.uint8)
-
-                    # Analyze the handwriting size and stroke width
-                    results = analyze_handwriting(img_data)
-
-                    # Display analysis results
-                    st.subheader("Handwriting Analysis Results:")
-                    st.write(f"Number of Strokes: {results['num_strokes']}")
-                    st.write(f"Total Handwriting Area: {results['total_area']} pixels")
-                    st.write(f"Average Stroke Area: {results['avg_stroke_area']} pixels")
-                    st.write(f"Average Stroke Length: {results['avg_stroke_length']} pixels")
-                    st.write(f"Smallest Stroke Area: {results['min_stroke_area']} pixels")
-                    st.write(f"Largest Stroke Area: {results['max_stroke_area']} pixels")
+               
                 
             else:
                 parkinsons_diagnosis = 'The person is not likely to have Parkinson\'s disease'
