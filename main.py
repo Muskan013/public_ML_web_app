@@ -55,7 +55,7 @@ parkinsons_model = pickle.load(open(f'{working_dir}/parkinsons_model.save', 'rb'
 with st.sidebar: 
     selected = option_menu( 
         'Multiple Disease Prediction System',
-        ['User Dashboard','Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction","Exercise Recommendations","Food and Diet Recommendations", "Nearby Hospital Finder","Emergency Health Info Card" ],
+        ['User Dashboard','Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction","Exercise Recommendations","Food and Diet Recommendations", "Nearby Hospital Finder","Emergency Health Info Card","Health Asssitant" ],
         icons=['people','activity', 'heart', 'person','person-workspace', 'egg-fried',  'hospital', 'card-heading'],
         default_index=0
     )
@@ -1458,7 +1458,8 @@ if selected == "Exercise Recommendations":
 #CHATBOT
 import streamlit as st
 import openai
-
+if selected == 'Health Asssitant':
+    st.title('Chatbot AI ')
 # Access the API key from Streamlit secrets
 api_key = st.secrets['OPENAI_API_KEY']
 
