@@ -10,6 +10,7 @@ reportlab
 librosa
 streamlit_drawable_canvas
 numpy
+openai
 
 
 
