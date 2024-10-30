@@ -30,6 +30,7 @@ import numpy as np
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import numpy as np
+import cv2
 
 
 
@@ -53,8 +54,8 @@ parkinsons_model = pickle.load(open(f'{working_dir}/parkinsons_model.save', 'rb'
 # Streamlit interface
 with st.sidebar: 
     selected = option_menu( 
-        'Multiple Disease Prediction System',
-        ['User Dashboard','Diabetes Prediction', 'Heart Disease Prediction', "Parkinson's Prediction","Exercise Recommendations","Food and Diet Recommendations", "Nearby Hospital Finder","Emergency Health Info Card","Health Asssitant" ],
+        'Multiple Disease Management System',
+        ['User Dashboard','Diabetes Management', 'Heart Disease Management', "Parkinson's Management","Exercise Recommendations","Food and Diet Recommendations", "Nearby Hospital Finder","Emergency Health Info Card" ],
         icons=['people','activity', 'heart', 'person','person-workspace', 'egg-fried',  'hospital', 'card-heading'],
         default_index=0
     )
@@ -606,9 +607,9 @@ def validate_diabetes_inputs(inputs):
 
 
 
-if selected == 'Diabetes Prediction':
+if selected == 'Diabetes Management':
     
-    st.title('Diabetes Prediction Using ML')
+    st.title('Diabetes Management System')
 
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -780,7 +781,7 @@ def validate_heart_disease_inputs(inputs):
             float_value = float(value)  # Convert to float
 
             # Specific validations for heart disease prediction parameters
-            if i == 0 and (float_value < 18 or float_value > 110):
+            if i == 0  and float_value > 110:
                 return False, ["Age should be between 18 and 110."]
             if i == 1 and float_value not in [0, 1]:
                 return False, ["Entered value are invalid, 1=male; 0=female"]
@@ -820,10 +821,10 @@ def validate_heart_disease_inputs(inputs):
     return valid, invalid_values  # Return only the invalid input values
 
 # Heart Disease Prediction Page
-if selected == 'Heart Disease Prediction':
+if selected == 'Heart Disease Management':
 
     # page title
-    st.title('Heart Disease Prediction using ML')
+    st.title('Heart Disease Management System')
 
     col1, col2, col3 = st.columns(3)
 
@@ -1056,8 +1057,8 @@ def validate_parkinsons_disease_inputs(inputs):
 
 
 
-if selected == "Parkinson's Prediction":
-    st.title("Parkinson's Disease Prediction using ML")
+if selected == "Parkinson's Management":
+    st.title("Parkinson's Disease Management System")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -1454,24 +1455,15 @@ if selected == "Exercise Recommendations":
 
 
 
-#CHATBOT
-import streamlit as st
-import openai
-if selected == 'Health Asssitant':
-    st.title('Chatbot AI ')
-# Access the API key from Streamlit secrets
-api_key = st.secrets['OPENAI_API_KEY']
 
-# Set up OpenAI with the API key
-openai.api_key = api_key
 
-# Example usage of the OpenAI API
-response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=[{"role": "user", "content": "Hello, how can I help you?"}]
-)
 
-st.write(response.choices[0].message['content'])
+
+
+
+
+
+
 
     
 
