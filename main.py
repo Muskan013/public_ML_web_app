@@ -30,6 +30,7 @@ import numpy as np
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import numpy as np
+import cv2
 
 
 
@@ -999,8 +1000,8 @@ def validate_parkinsons_disease_inputs(inputs):
                 return False, ["MDVP: Fo(Hz) should be between 18 and 110."]
             if i == 1 and float_value < 100 or float_value > 590:
                 return False, ["MDVP: Fhi(Hz) should be between 100 and 590."]
-            if i == 2 and float_value < 65.5 or float_value > 240:
-                return False, ["MDVP: Flo(Hz) should be between 100 and 590."]
+            if i == 2 and (float_value < 55.5 or float_value > 240):
+                return False, ["MDVP: Flo (Hz) should be between 55.5 and 240."]
             if i == 3 and float_value not in [0, 0.01, 0.03]:
                 return False, ["The Entered values are invalid, MDVP: Jitter(%) exceed the limit more than 0.03."]
             if i == 4 and float_value not in [0]:
@@ -1239,8 +1240,10 @@ if selected == "Parkinson's Management":
                 
             else:
                 parkinsons_diagnosis = 'The person is not likely to have Parkinsons disease'
+                st.success(parkinsons_diagnosis)
         else:
             parkinsons_diagnosis = 'The entered values are invalid: ' + ', '.join(feedback_pd)
+            st.success(parkinsons_diagnosis)
 
     
     
@@ -1451,55 +1454,6 @@ if selected == "Exercise Recommendations":
     else:
         st.subheader("Exercise Recommendations")
         st.write("Engage in regular physical activity, including aerobic exercises, strength training, and flexibility exercises.")
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
-
-
-
-
-
-
-
-     
-    
-
-
-    
-    
-    
-    
 
 
 
