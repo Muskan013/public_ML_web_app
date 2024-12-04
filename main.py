@@ -987,144 +987,109 @@ with st.sidebar:
         
 
 # Parkinson's Prediction Page
-def validate_parkinsons_disease_inputs(inputs):
-    invalid_values = []  # To store invalid input values
-    valid = True
-    
-    for i, value in enumerate(inputs):
-        try:
-            float_value = float(value)  # Convert to float
-
-            # Specific validations for heart disease prediction parameters
-            if i == 0 and (float_value < 88.3 or float_value > 260):
-                return False, ["MDVP: Fo(Hz) should be between 18 and 110."]
-            if i == 1 and float_value < 100 or float_value > 590:
-                return False, ["MDVP: Fhi(Hz) should be between 100 and 590."]
-            if i == 2 and (float_value < 55.5 or float_value > 240):
-                return False, ["MDVP: Flo (Hz) should be between 55.5 and 240."]
-            if i == 3 and float_value not in [0, 0.01, 0.03]:
-                return False, ["The Entered values are invalid, MDVP: Jitter(%) exceed the limit more than 0.03."]
-            if i == 4 and float_value not in [0]:
-                return False, ["The Entered values are invalid, MDVP: Jitter(Abs) cannot exceed more than 0"]
-            if i == 5 and float_value not in [0, 0.02]:
-                return False, ["The Entered values are invalid, MDVP: RAP cannot exceed more than 0.02"]
-            if i == 6 and float_value not in [0, 0.02]:
-                return False, ["The Entered values are invalid, MDVP: PPQ cannot exceed more than 0.02."]
-            if i == 7 and (float_value < 0 or float_value > 0.06):
-                return False, ["The Entered values are invalid, Jitter: DDP cannot exceed more than 0.06."]
-            if i == 8 and (float_value < 0.01 or float_value > 0.12):
-                return False, ["MDVP:Shimmer should be between 0.01 & 0.12"]
-            if i == 9 and (float_value < 0.1 or float_value >0.6 ):
-                return False, ["MDVP: Shimmer(db) should be between 0.1 and 0.6"]
-            if i == 10 and float_value not in [0.002, 0.003]:
-                return False, ["The Entered values are invalid, Shimmer: APQ3 cannot exceed more more than 0.003."]
-            if i == 11 and float_value not in [0.003, 0.04]:
-                return False, ["Shimmer:APQ5 should be between 0.003 & 0.04"]
-            if i == 12 and float_value not in [0.006, 0.05]:
-                return False, ["MDVP:APQ should be between 0.006 & 0.05"]
-            if i == 13 and (float_value < 0.005 or float_value > 0.17):
-                return False, ["Shimmer:DDA should be between 0.005 & 0.17."]
-            if i == 14 and (float_value < 0.01 or float_value > 0.5):
-                return False, ["NHR should be between 0.01 & 0.5"]
-            if i == 15 and (float_value < 10 or float_value > 35):
-                return False, ["HNR should be between 10db & 35db"]
-            if i == 16 and (float_value < 0.2 or float_value > 0.7):
-                return False, ["RPDE should be between 0.2 & 0.7"]
-            if i == 17 and (float_value < 0.5 or float_value > 1.5):
-                return False, ["DFA should be between 0.5 & 1.5."]
-            if i == 18 and (float_value < 0.5 or float_value > 2.0):
-                return False, ["Spread 1 should be between 0.5 and 2.0"]
-            if i == 19 and (float_value < 0.5 or float_value > 2.5):
-                return False, ["Spread 2 should be between 1.0 and 1.5"]
-            if i == 20 and (float_value < 1.0 or float_value > 1.5):
-                return False, ["D2 should be between 1.0 and 1.5."]
-            if i == 21 and (float_value < 0.1 or float_value > 0.5):
-                return False, ["PPE value should be between 0.1 and 0.5"]
-            
-
-            # General validation for negative values
-            if float_value < 0:
-                invalid_values.append(value)
-                valid = False
-
-        except ValueError:
-            invalid_values.append(value)  # Add invalid input
-            valid = False
-            
-    return valid, invalid_values  # Return only the invalid input values
-
-
-
-
-
 if selected == "Parkinson's Management":
-    st.title("Parkinson's Disease Management System")
 
-    col1, col2 = st.columns(2)
-    with col1:
-        fo = st.text_input("MDVP: Fo (Hz)")
-    with col2:
-        fhi = st.text_input("MDVP: Fhi (Hz)")
-    with col1:
-        flo = st.text_input("MDVP: Flo (Hz)")
-    with col2:
-        Jitter = st.text_input("MDVP: Jitter (%)")
-    with col1:
-        JitterAbs = st.text_input("MDVP: Jitter (Abs)")
-    with col2:
-        RAP = st.text_input("MDVP: RAP")
-    with col1:
-        PPQ = st.text_input("MDVP: PPQ")
-    with col2:
-        DDP = st.text_input("MDVP: DDP")
-    with col1:
-        Shimmer = st.text_input("MDVP: Shimmer")
-    with col2:
-        ShimmerDB = st.text_input("MDVP: Shimmer (dB)")
-    with col1:
-        APQ3 = st.text_input("Shimmer: APQ3")
-    with col2:
-        APQ5 = st.text_input("Shimmer: APQ5")
-    with col1:
-        APQ = st.text_input("Shimmer: APQ")
-    with col2:
-        DDA = st.text_input("Shimmer: DDA")
-    with col1:
-        NHR = st.text_input("NHR")
-    with col2:
-        HNR = st.text_input("HNR")
-    with col1:
-        RPDE = st.text_input("RPDE")
-    with col2:
-        DFA = st.text_input("DFA")
-    with col1:
-        spread1 = st.text_input("Spread1")
-    with col2:
-        spread2 = st.text_input("Spread2")
-    with col1:
-        D2 = st.text_input("D2")
-    with col2:
-        Epsilon = st.text_input("Epsilon")
+    # page title
+    st.title("Parkinson's Management")
 
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    with col1:
+        fo = st.text_input('MDVP:Fo(Hz)')
+
+    with col2:
+        fhi = st.text_input('MDVP:Fhi(Hz)')
+
+    with col3:
+        flo = st.text_input('MDVP:Flo(Hz)')
+
+    with col4:
+        Jitter_percent = st.text_input('MDVP:Jitter(%)')
+
+    with col5:
+        Jitter_Abs = st.text_input('MDVP:Jitter(Abs)')
+
+    with col1:
+        RAP = st.text_input('MDVP:RAP')
+
+    with col2:
+        PPQ = st.text_input('MDVP:PPQ')
+
+    with col3:
+        DDP = st.text_input('Jitter:DDP')
+
+    with col4:
+        Shimmer = st.text_input('MDVP:Shimmer')
+
+    with col5:
+        Shimmer_dB = st.text_input('MDVP:Shimmer(dB)')
+
+    with col1:
+        APQ3 = st.text_input('Shimmer:APQ3')
+
+    with col2:
+        APQ5 = st.text_input('Shimmer:APQ5')
+
+    with col3:
+        APQ = st.text_input('MDVP:APQ')
+
+    with col4:
+        DDA = st.text_input('Shimmer:DDA')
+
+    with col5:
+        NHR = st.text_input('NHR')
+
+    with col1:
+        HNR = st.text_input('HNR')
+
+    with col2:
+        RPDE = st.text_input('RPDE')
+
+    with col3:
+        DFA = st.text_input('DFA')
+
+    with col4:
+        spread1 = st.text_input('spread1')
+
+    with col5:
+        spread2 = st.text_input('spread2')
+
+    with col1:
+        D2 = st.text_input('D2')
+
+    with col2:
+        PPE = st.text_input('PPE')
+
+    # Collect input values into a list
+    inputs = [fo, fhi, flo, Jitter_percent, Jitter_Abs,
+              RAP, PPQ, DDP, Shimmer, Shimmer_dB, APQ3, APQ5,
+              APQ, DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]
+
+    # Code for prediction
     parkinsons_diagnosis = ''
-    health_recommendation_pd = ''
 
-    if st.button('Parkinson\'s Test Result', key='parkinsons_button'):
-        user_input_pd = [fo, fhi, flo, Jitter, JitterAbs, RAP, PPQ, DDP, Shimmer, ShimmerDB, APQ3, APQ5, APQ, DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, Epsilon]
-       
-        user_input_pd = np.array(user_input_pd, dtype=float)
+    # Creating a button for prediction    
+    if st.button("Parkinson's Test Result"):
+
+        # Convert inputs to float and handle invalid values
+        user_input = []
+        for value in inputs:
+            try:
+                float_value = float(value)  # Convert to float
+                user_input.append(float_value)
+            except ValueError:
+                user_input.append(0.0)  # Append 0.0 for invalid inputs
+
+        parkinsons_prediction = parkinsons_model.predict([user_input])
+
+        if parkinsons_prediction[0] == 1:
+            parkinsons_diagnosis = "This person has Parkinson's disease"
+
+    st.success(parkinsons_diagnosis)
 
 
-        # Validate the inputs
-        valid_pd, feedback_pd = validate_parkinsons_disease_inputs(user_input_pd)
-
-        if valid_pd:
-            parkinsons_prediction = parkinsons_model.predict([user_input_pd])
-
-            if parkinsons_prediction[0] == 1:
-                parkinsons_diagnosis = 'The person is likely to have Parkinson\'s disease'
-                st.success(parkinsons_diagnosis)
-                health_recommendation_pd = '''
+    # Health Recommendations for Parkinson's Disease
+    health_recommendation_pd = '''
                 *Health Recommendations for Parkinson's Disease:*
                 - Regular physical activity and exercise.
                 - Maintain a balanced diet rich in fruits, vegetables, and whole grains.
@@ -1132,118 +1097,125 @@ if selected == "Parkinson's Management":
                 - Ensure regular check-ups with healthcare providers.
                 - Consider physical therapy to improve mobility and balance.
                 '''
-                st.info(health_recommendation_pd)
-                # Define function to categorize risk levels based on thresholds
-                def categorize_parkinson_risk(value, low_threshold, high_threshold):
-                    if value < low_threshold:
-                        return 'Low Risk'
-                    elif value > high_threshold:
-                        return 'High Risk'
-                    else: 
-                        return 'Normal'
+    st.info(health_recommendation_pd)
 
-                # Define function to visualize heart disease risk factors using Plotly with categories
-                def visualize_parkinson_disease_risk(factors, values, low_thresholds, high_thresholds, title="Parkinson Disease Risk Analysis"):
-                    # Categorize each factor based on thresholds
-                    categories = [categorize_parkinson_risk(value, low, high) for value, low, high in zip(values, low_thresholds, high_thresholds)]
-                    
-                    # Create a Plotly bar chart with risk categories
-                    fig = px.bar(
-                        x=factors,
-                        y=values,
-                        color=categories,
-                        labels={'x': 'Parkinson Disease Risk Factors', 'y': 'Values', 'color': 'Risk Category'},
-                        title=title,
-                        color_discrete_map={
-                            'Low Risk': 'green',
-                            'Normal': 'blue',
-                            'High Risk': 'red'
-                        }
-                    )
-                    st.plotly_chart(fig)
-                # Defining risk thresholds
-                risk_factors = ['mdvp:fo(hz)', 'mdvp:fhi(hz)', 'mdvp:flo(hz)', 'mdvp:jitter(%)', 'mdvp:jitter(abs)', 'mdvp:rap', 'mdvp:ppq', 'jitter:ddp', 'mdvp:shimmer','mdvp:shimmer(db)','shimmer:apq3', 'shimmer:apq5', 'mdvp:apq', 'shimmer:dda', 'nhr', 'hnr', 'rpde', 'dfa', 'spread 1', 'spread 2', 'd2', 'ppe']
-                categories = [
-                    categorize_risk(float(fo), 88.3, 150),
-                    categorize_risk(float(fhi), 100, 200),
-                    categorize_risk(float(flo), 65.5, 100),
-                    categorize_risk(float(Jitter), 0, 0.01),
-                    categorize_risk(float(JitterAbs), 0, 0),
-                    categorize_risk(float(RAP), 0, 0),
-                    categorize_risk(float(PPQ), 0, 0),
-                    categorize_risk(float(DDP), 0, 0.01 ),
-                    categorize_risk(float(Shimmer), 0.01, 0.04),
-                    categorize_risk(float(ShimmerDB), 0.1, 0.4 ),
-                    categorize_risk(float(APQ3), 0.002, 0.01),
-                    categorize_risk(float(APQ5), 0.003, 0.02),
-                    categorize_risk(float(APQ), 0.006, 0.03),
-                    categorize_risk(float(DDA), 0.005, 0.10),
-                    categorize_risk(float(NHR), 0.01, 0.2 ),
-                    categorize_risk(float(HNR), 10, 20),
-                    categorize_risk(float(RPDE), 0.2, 0.4 ),
-                    categorize_risk(float(DFA), 0.5, 1.0),
-                    categorize_risk(float(spread1), 0.5, 1.0),
-                    categorize_risk(float(spread2), 1.0, 1.3),
-                    categorize_risk(float(D2), 1.0, 1.3),
-                    categorize_risk(float(Epsilon), 0.1, 0.3)
-                    
-                ]
-                
-                # Visualize with risk categories
-                visualize_risk_factors_with_categories(risk_factors, user_input_pd, categories, "Parkinson Disease Risk Factors")
-                st.subheader("Exercise Recommendations for Parkinson Disease")
-                st.write("""
-                Regular physical activity is essential for Parkinson Disease Risk Factor. Below are some recommended exercises:
-                """)
+    # Convert values, low_thresholds, and high_thresholds to floats before comparison
+def categorize_parkinson_risk(value, low_threshold, high_threshold):
+    # Convert to float if not already a float (in case of string inputs)
+    try:
+        value = float(value)
+        low_threshold = float(low_threshold)
+        high_threshold = float(high_threshold)
+    except ValueError:
+        return 'Invalid Value'
+    
+    if value < low_threshold:
+        return 'Low Risk'
+    elif value > high_threshold:
+        return 'High Risk'
+    else:
+        return 'Normal'
 
-                col1, col2, col3 = st.columns(3)
-                col4, col5, col6 = st.columns(3)
-                col7, col8, col9 = st.columns(3)
-                
-                with col1:
-                    st.image("https://assistinghands.com/34/wp-content/uploads/sites/59/2019/10/Fotolia_78775833_Subscription_Monthly_M.jpg", caption="Big Movements Training (BIG Therapy)", use_column_width=True)
-                    st.write("This therapy encourages individuals to practice exaggerated movements to counter the small, shuffling steps that are typical in Parkinson’s.")
-                
-                with col2:
-                    st.image("https://i.ytimg.com/vi/jWItbongRzQ/maxresdefault.jpg", caption="Marching In Place", use_column_width=True)
-                    st.write("Helps improve leg strength and balance by focusing on lifting the knees and maintaining rhythm..")
-                
-                with col3:
-                    st.image("https://www.verywellfit.com/thmb/UUvsyr6XyBef085zUNQkS6OXKIY=/2182x1454/filters:fill(FFDB5D,1)/Verywell-10-2696048-CalfStretchTowel-1003-598cba640d327a0010ee067b.jpg" , caption="Seated Stretching and Flexibility Exercises", use_column_width=True)                 
-                    st.write("Stretching exercises can reduce stiffness and improve mobility in the joints and muscles..")
-                with col4:
-                    st.image("https://assets.rebelmouse.io/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFnZSI6Imh0dHBzOi8vYXNzZXRzLnJibC5tcy8yMjA5NjkwOC9vcmlnaW4uanBnIiwiZXhwaXJlc19hdCI6MTYzODIxNDgzOH0.LcpArmK-MNSqCjjJg1nV7BZi4YUTuR2CxyDm0nb_hUs/img.jpg?width=980", caption="Balance Exercises", use_column_width=True)
-                    st.write("Exercises like standing on one foot, heel-to-toe walking, or using a balance board can improve stability..")
-                
-                with col5:
-                    st.image("https://th.bing.com/th/id/R.cc7ad0019ed22faddf0a7aedcccf0fff?rik=EAef8%2fPyv7Rt%2bw&riu=http%3a%2f%2fzenfulspirit.com%2fwp-content%2fuploads%2f2015%2f11%2f3rd-image1.jpg&ehk=LPiG%2fnv67yeKEfDkiDor%2f1hqupbn2FN7GA%2fvQQKtVAo%3d&risl=&pid=ImgRaw&r=0", caption="Breathing Exercise & Meditation", use_column_width=True)
-                    st.write("Although not physical exercises, deep breathing and meditation help reduce stress, which can significantly benefit heart health.")
-                
-                with col6:
-                    st.image("https://th.bing.com/th/id/OIP.4Bm7Duuhp5BsN95fl6-sfAAAAA?rs=1&pid=ImgDetMain", caption="Cycling", use_column_width=True)
-                    st.write("A great aerobic exercise that improves cardiovascular health without putting too much stress on joints.")
-                    
-                with col7:
-                    st.image("https://th.bing.com/th/id/OIP.Ol1CPHgk2gnjb7iLZM9I4QHaHa?rs=1&pid=ImgDetMain", caption="Step Aerobics", use_column_width=True)
-                    st.write("Utilizing a small step or platform, this workout improves cardiovascular health and leg strength and can be adapted for different fitness levels.")
-                
-                with col8:
-                    st.image("https://www.fisioaviles.com/wp-content/uploads/2019/08/Beneficios-del-pilates.jpg", caption="Pilates", use_column_width=True)
-                    st.write("Strengthens core muscles, improves flexibility, and can be modified to suit different fitness levels, making it ideal for those new to exercise or with limited mobility.")
-                
-                with col9:
-                    st.image("https://www.fitnesseducation.edu.au/wp-content/uploads/2020/10/Walking-stairs-e1587693663738.jpg", caption="Stair Climbing", use_column_width=True)
-                    st.write("Improves leg strength and cardiovascular health; it’s a convenient exercise that can be done anywhere with stairs.")
-                
 
-                
-                
-            else:
-                parkinsons_diagnosis = 'The person is not likely to have Parkinsons disease'
-                st.success(parkinsons_diagnosis)
-        else:
-            parkinsons_diagnosis = 'The entered values are invalid: ' + ', '.join(feedback_pd)
-            st.success(parkinsons_diagnosis)
+    # Define function to visualize Parkinson's disease risk factors using Plotly with categories
+    def visualize_parkinson_disease_risk(factors, values, low_thresholds, high_thresholds, title="Parkinson Disease Risk Analysis"):
+        # Categorize each factor based on thresholds
+        categories = [categorize_parkinson_risk(value, low, high) for value, low, high in zip(values, low_thresholds, high_thresholds)]
+        
+        # Create a Plotly bar chart with risk categories
+        fig = px.bar(
+            x=factors,
+            y=values,
+            color=categories,
+            labels={'x': 'Parkinson Disease Risk Factors', 'y': 'Values', 'color': 'Risk Category'},
+            title=title,
+            color_discrete_map={
+                'Low Risk': 'green',
+                'Normal': 'blue',
+                'High Risk': 'red'
+            }
+        )
+        st.plotly_chart(fig)
+
+    # Defining risk thresholds and factors
+    risk_factors = ['mdvp:fo(hz)', 'mdvp:fhi(hz)', 'mdvp:flo(hz)', 'mdvp:jitter(%)', 'mdvp:jitter(abs)', 'mdvp:rap', 'mdvp:ppq', 'jitter:ddp', 'mdvp:shimmer','mdvp:shimmer(db)','shimmer:apq3', 'shimmer:apq5', 'mdvp:apq', 'shimmer:dda', 'nhr', 'hnr', 'rpde', 'dfa', 'spread 1', 'spread 2', 'd2', 'ppe']
+    
+    categories = [
+        categorize_parkinson_risk(float(fo), 88.3, 150),
+        categorize_parkinson_risk(float(fhi), 100, 200),
+        categorize_parkinson_risk(float(flo), 65.5, 100),
+        categorize_parkinson_risk(float(Jitter_percent), 0, 0.01),
+        categorize_parkinson_risk(float(Jitter_Abs), 0, 0),
+        categorize_parkinson_risk(float(RAP), 0, 0),
+        categorize_parkinson_risk(float(PPQ), 0, 0),
+        categorize_parkinson_risk(float(DDP), 0, 0.01 ),
+        categorize_parkinson_risk(float(Shimmer), 0.01, 0.04),
+        categorize_parkinson_risk(float(Shimmer_dB), 0.1, 0.4 ),
+        categorize_parkinson_risk(float(APQ3), 0.002, 0.01),
+        categorize_parkinson_risk(float(APQ5), 0.003, 0.02),
+        categorize_parkinson_risk(float(APQ), 0.006, 0.03),
+        categorize_parkinson_risk(float(DDA), 0.005, 0.10),
+        categorize_parkinson_risk(float(NHR), 0.01, 0.2 ),
+        categorize_parkinson_risk(float(HNR), 10, 20),
+        categorize_parkinson_risk(float(RPDE), 0.2, 0.4 ),
+        categorize_parkinson_risk(float(DFA), 0.5, 1.0),
+        categorize_parkinson_risk(float(spread1), 0.5, 1.0),
+        categorize_parkinson_risk(float(spread2), 1.0, 1.3),
+        categorize_parkinson_risk(float(D2), 1.0, 1.3),
+        categorize_parkinson_risk(float(PPE), 0.1, 0.3)
+    ]
+    
+    # Visualize with risk categories
+    visualize_parkinson_disease_risk(risk_factors, user_input, categories, "Parkinson Disease Risk Factors")
+
+    # Exercise Recommendations for Parkinson's Disease
+    st.subheader("Exercise Recommendations for Parkinson's Disease")
+    st.write("""
+    Regular physical activity is essential for Parkinson's Disease Risk Factor. Below are some recommended exercises:
+    """)
+
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
+    col7, col8, col9 = st.columns(3)
+
+    with col1:
+        st.image("https://assistinghands.com/34/wp-content/uploads/sites/59/2019/10/Fotolia_78775833_Subscription_Monthly_M.jpg", caption="Big Movements Training (BIG Therapy)", use_column_width=True)
+        st.write("This therapy encourages individuals to practice exaggerated movements to counter the small, shuffling steps that are typical in Parkinson’s.")
+    
+    with col2:
+        st.image("https://i.ytimg.com/vi/jWItbongRzQ/maxresdefault.jpg", caption="Marching In Place", use_column_width=True)
+        st.write("Helps improve leg strength and balance by focusing on lifting the knees and maintaining rhythm.")
+    
+    with col3:
+        st.image("https://www.verywellfit.com/thmb/UUvsyr6XyBef085zUNQkS6OXKIY=/2182x1454/filters:fill(FFDB5D,1)/Verywell-10-2696048-CalfStretchTowel-1003-598cba640d327a0010ee067b.jpg", caption="Seated Stretching and Flexibility Exercises", use_column_width=True)                 
+        st.write("Stretching exercises can reduce stiffness and improve mobility in the joints and muscles.")
+    with col4:
+        st.image("https://assets.rebelmouse.io/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbWFnZSI6Imh0dHBzOi8vYXNzZXRzLnJibC5tcy8yMjA5NjkwOC9vcmlnaW4uanBnIiwiZXhwaXJlc19hdCI6MTYzODIxNDgzOH0.LcpArmK-MNSqCjjJg1nV7BZi4YUTuR2CxyDm0nb_hUs/img.jpg?width=980", caption="Balance Exercises", use_column_width=True)
+        st.write("Exercises like standing on one foot, heel-to-toe walking, or using a balance board can improve stability.")
+
+    with col5:
+        st.image("https://th.bing.com/th/id/R.cc7ad0019ed22faddf0a7aedcccf0fff?rik=EAef8%2fPyv7Rt%2bw&riu=http%3a%2f%2fzenfulspirit.com%2fwp-content%2fuploads%2f2015%2f11%2f3rd-image1.jpg&ehk=LPiG%2fnv67yeKEfDkiDor%2f1hqupbn2FN7GA%2fvQQKtVAo%3d&risl=&pid=ImgRaw&r=0", caption="Breathing Exercise & Meditation", use_column_width=True)
+        st.write("Although not physical exercises, deep breathing and meditation help reduce stress, which can significantly benefit heart health.")
+
+    with col6:
+        st.image("https://th.bing.com/th/id/OIP.4Bm7Duuhp5BsN95fl6-sfAAAAA?rs=1&pid=ImgDetMain", caption="Cycling", use_column_width=True)
+        st.write("A great aerobic exercise that improves cardiovascular health without putting too much stress on joints.")
+
+    with col7:
+        st.image("https://th.bing.com/th/id/OIP.Ol1CPHgk2gnjb7iLZM9I4QHaHa?rs=1&pid=ImgDetMain", caption="Step Aerobics", use_column_width=True)
+        st.write("Utilizing a small step or platform, this workout improves cardiovascular health and leg strength and can be adapted for different fitness levels.")
+
+    with col8:
+        st.image("https://www.fisioaviles.com/wp-content/uploads/2019/08/Beneficios-del-pilates.jpg", caption="Pilates", use_column_width=True)
+        st.write("Strengthens core muscles, improves flexibility, and can be modified to suit different fitness levels, making it ideal for those new to exercise or with limited mobility.")
+
+    with col9:
+        st.image("https://www.fitnesseducation.edu.au/wp-content/uploads/2020/10/Walking-stairs-e1587693663738.jpg", caption="Stair Climbing", use_column_width=True)
+        st.write("Improves leg strength and cardiovascular health; it’s a convenient exercise that can be done anywhere with stairs.")
+
+    # The person does not have Parkinson's Disease (else part)
+    if parkinsons_prediction[0] == 0:
+        st.success("The person does not have Parkinson's disease.")
 
     
     
